@@ -43,7 +43,7 @@ ND_unifiednoise3d_float::update()
     // Initialize all noise types
     mPerlinNoise = std::make_unique<moonray::noise::Perlin>();
     mIspc.mPerlinNoise = mPerlinNoise->getIspcPerlin();
-    
+
     // Create Noise for cell noise
     mCellNoise = std::make_unique<moonray::noise::Noise>(
         0,      // seed
@@ -51,7 +51,7 @@ ND_unifiednoise3d_float::update()
         false   // useStaticTables
     );
     mIspc.mCellNoise = mCellNoise->getIspc();
-    
+
     // Initialize Worley noise
     mWorleyNoise = std::make_unique<moonray::noise::Worley>();
     mIspc.mWorleyNoise = mWorleyNoise->getIspcWorley();
@@ -73,7 +73,7 @@ ND_unifiednoise3d_float::sample(const Map* self, moonray::shading::TLState *tls,
     const Int octaves = evalInt(me, octavesAttr, tls, state);
     const Float lacunarity = evalFloat(me, lacunarityAttr, tls, state);
     const Float diminish = evalFloat(me, diminishAttr, tls, state);
-    const Int type = evalInt(me, typeAttr, tls, state);
+    const Int type = me->get(typeAttr);
 
     // Apply frequency and offset transformations
     Vec3f transformedPos = (position * freq) + offset;
@@ -88,42 +88,42 @@ ND_unifiednoise3d_float::sample(const Map* self, moonray::shading::TLState *tls,
             const float persistence = 0.5f;
             const float lac = 2.0f;
             outValue = me->mPerlinNoise->perlinFractal3D(transformedPos, maxLevel, persistence, lac);
-            
+
             // Remap from [-1, 1] to [0, 1]
             outValue = (outValue + 1.0f) * 0.5f;
             break;
         }
-        
+
         case 1: { // Cell noise
             // Cell noise returns a pseudo-random value for each cell based on position
             const int ix = static_cast<int>(floor(transformedPos.x));
             const int iy = static_cast<int>(floor(transformedPos.y));
             const int iz = static_cast<int>(floor(transformedPos.z));
-            
+
             // Generate a unique cell ID using the noise permutation table
             const ispc::NOISE_Noise* noise = me->mCellNoise->getIspc();
             const int tableSize = noise->mTableSize;
             const int* permTable = noise->mPermutationTable;
-            
+
             const int cellId = permTable[
                 (permTable[
                     (permTable[ix & (tableSize - 1)] + iy) & (tableSize - 1)
                 ] + iz) & (tableSize - 1)
             ];
-            
+
             // Convert the cell ID to a float in [0, 1) range
             outValue = static_cast<float>(cellId) / static_cast<float>(tableSize);
             break;
         }
-        
+
         case 2: { // Worley noise
             // Create Worley noise sample structure
             ispc::NOISE_WorleySample noiseSample;
             noiseSample.position = asIspc(transformedPos);
-            
+
             // Create array for worley points
             moonray::noise::Worley_PointArray worleyPoints;
-            
+
             // Search for points with jitter using fractal method
             const float minkowskiNumber = 2.0f; // Standard Euclidean distance
             const float maxLevel = 1.0f; // Single level for basic Worley noise
@@ -134,7 +134,7 @@ ND_unifiednoise3d_float::sample(const Map* self, moonray::shading::TLState *tls,
                 noiseSample,
                 worleyPoints
             );
-            
+
             // For float output, return the distance to the closest point
             // Apply square root for better distribution, then clamp to [0,1] range
             if (worleyPoints.size() > 0 && worleyPoints[0].dist >= 0.0f) {
@@ -144,14 +144,14 @@ ND_unifiednoise3d_float::sample(const Map* self, moonray::shading::TLState *tls,
             }
             break;
         }
-        
+
         case 3: { // Fractal noise
             outValue = me->mPerlinNoise->perlinFractal3D(transformedPos, octaves, diminish, lacunarity);
-            
+
             // Note: fractal noise output is not remapped from [-1, 1] to [0, 1] to match Karma's behavior
             break;
         }
-        
+
         default:
             outValue = 0.0f;
             break;
@@ -159,7 +159,7 @@ ND_unifiednoise3d_float::sample(const Map* self, moonray::shading::TLState *tls,
 
     // Remap from [0, 1] to [outmin, outmax]
     outValue = outmin + outValue * (outmax - outmin);
-    
+
     // Optionally clamp the output
     if (clampoutput) {
         outValue = scene_rdl2::math::clamp(outValue, outmin, outmax);
