@@ -4,9 +4,9 @@
 # if building at the same time as scene_rdl2 we need to get access to the
 # scene_rdl2 python module before it is installed so point to it in the
 # build directory. Otherwie it should already be in the environment
-if (EXISTS "${CMAKE_BINARY_DIR}/moonray/scene_rdl2" AND IS_DIRECTORY "${CMAKE_BINARY_DIR}/moonray/scene_rdl2")
+if (CMAKE_PROJECT_NAME STREQUAL "openmoonray")
     set(PYTHONPATH_WITH_SCENE_RDL2 ${CMAKE_BINARY_DIR}/moonray/scene_rdl2/mod/python/py_scene_rdl2:$ENV{PYTHONPATH})
-elseif(EXISTS "${CMAKE_BINARY_DIR}/openmoonray/moonray/scene_rdl2" AND IS_DIRECTORY "${CMAKE_BINARY_DIR}/openmoonray/moonray/scene_rdl2")
+elseif (CMAKE_PROJECT_NAME STREQUAL "openmoonray_dwa")
     set(PYTHONPATH_WITH_SCENE_RDL2 ${CMAKE_BINARY_DIR}/openmoonray/moonray/scene_rdl2/mod/python/py_scene_rdl2:$ENV{PYTHONPATH})
 else()
     set(PYTHONPATH_WITH_SCENE_RDL2 $ENV{PYTHONPATH})
@@ -26,10 +26,7 @@ add_custom_target(
 
 add_dependencies(shaders all_shader_dsos)
 
-if (EXISTS "${CMAKE_BINARY_DIR}/moonray/scene_rdl2" AND IS_DIRECTORY "${CMAKE_BINARY_DIR}/moonray/scene_rdl2")
-	add_dependencies(shaders scene_rdl2)
-	add_dependencies(shaders DwaEmissiveMaterial CheckerboardMap TestInputsMap TestBoolOutputMap TestColorOutputMap TestDisplacement2Map TestInputsMap TestIntOutputMap TestMat3fOutputMap TestMat4fOutputMap TestNormalMap2Map TestRgbaOutputMap TestVec4fOutputMap TestInputsDisplacement TestInputsNormalMap )
-elseif(EXISTS "${CMAKE_BINARY_DIR}/openmoonray/moonray/scene_rdl2" AND IS_DIRECTORY "${CMAKE_BINARY_DIR}/openmoonray/moonray/scene_rdl2")
+if (CMAKE_PROJECT_NAME STREQUAL "openmoonray_dwa" OR CMAKE_PROJECT_NAME STREQUAL "openmoonray")
 	add_dependencies(shaders scene_rdl2)
 	add_dependencies(shaders DwaEmissiveMaterial CheckerboardMap TestInputsMap TestBoolOutputMap TestColorOutputMap TestDisplacement2Map TestInputsMap TestIntOutputMap TestMat3fOutputMap TestMat4fOutputMap TestNormalMap2Map TestRgbaOutputMap TestVec4fOutputMap TestInputsDisplacement TestInputsNormalMap )
 endif()
