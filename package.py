@@ -110,7 +110,6 @@ private_build_requires = [
     'cmake_modules-2.0',
     'cppunit',
     'ispc-1.20.0.x',
-    'materialx', # for cmd/make_stub_shader
     'python',
     'orats',
     'hdMoonray',

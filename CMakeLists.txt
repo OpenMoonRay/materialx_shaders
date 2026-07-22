@@ -67,7 +67,6 @@ find_package(Python REQUIRED COMPONENTS Interpreter Development)
 find_package(TBB REQUIRED)
 find_package(Boost REQUIRED COMPONENTS "${BOOST_PYTHON_COMPONENT_NAME}")
 find_package(OpenImageIO REQUIRED)
-find_package(MaterialX REQUIRED)
 
 if("${PROJECT_NAME}" STREQUAL "${CMAKE_PROJECT_NAME}")
     find_package(Moonray REQUIRED)
