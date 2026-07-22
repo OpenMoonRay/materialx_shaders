@@ -4,13 +4,19 @@
 cmake_minimum_required (VERSION 3.23.1)
 
 find_program(GENERATE_PYTHON_CREATE_FUNCTIONS generate_python_create_functions
-		     HINTS "mod/python/generate_python_create_functions"
-		     REQUIRED)
+             HINTS "mod/python/generate_python_create_functions"
+             REQUIRED)
 
 include(OMR_PackageVersion)  # Sets versionString, projectString and PACKAGE_NAME
+
+set(languages LANGUAGES CXX)
+if(NOT CMAKE_XCODE_BUILD_SYSTEM)
+    list(APPEND languages ISPC)
+endif()
+
 project(${projectString}
-    VERSION ${versionString}
-    LANGUAGES CXX ISPC)
+        VERSION ${versionString}
+        ${languages})
 
 string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
 list(APPEND CMAKE_MESSAGE_CONTEXT ${PROJECT_NAME})
@@ -62,9 +68,6 @@ find_package(TBB REQUIRED)
 find_package(Boost REQUIRED COMPONENTS "${BOOST_PYTHON_COMPONENT_NAME}")
 find_package(OpenImageIO REQUIRED)
 find_package(MaterialX REQUIRED)
-if(NOT pxr_FOUND)
-    # find_package(pxr REQUIRED)
-endif()
 
 if("${PROJECT_NAME}" STREQUAL "${CMAKE_PROJECT_NAME}")
     find_package(Moonray REQUIRED)
