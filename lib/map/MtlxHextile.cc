@@ -99,7 +99,7 @@ HextileCoord(
     const Vec2f& dCoordDx,
     const Vec2f& dCoordDy)
 {
-    const float sqrt3_2 = sqrt(3.0f) * 2.0f;
+    const float sqrt3_2 = scene_rdl2::math::sqrt(3.0f) * 2.0f;
 
     // scale coord to maintain the original fit
     Vec2f st = coord * sqrt3_2;
@@ -146,12 +146,12 @@ HextileCoord(
     float rr_y = rotationRange.y * sPi / 180.0f;
     Vec3f rand_x = Vec3f(rand1.x, rand2.x, rand3.x);
     Vec3f rotations = lerp(Vec3f(rr_x), Vec3f(rr_y), rand_x * rotation);
-    float sin_r_x = sin(rotations.x);
-    float sin_r_y = sin(rotations.y);
-    float sin_r_z = sin(rotations.z);
-    float cos_r_x = cos(rotations.x);
-    float cos_r_y = cos(rotations.y);
-    float cos_r_z = cos(rotations.z);
+    float sin_r_x = scene_rdl2::math::sin(rotations.x);
+    float sin_r_y = scene_rdl2::math::sin(rotations.y);
+    float sin_r_z = scene_rdl2::math::sin(rotations.z);
+    float cos_r_x = scene_rdl2::math::cos(rotations.x);
+    float cos_r_y = scene_rdl2::math::cos(rotations.y);
+    float cos_r_z = scene_rdl2::math::cos(rotations.z);
 
     // randomized scale
     Vec3f rand_y = Vec3f(rand1.y, rand2.y, rand3.y);
