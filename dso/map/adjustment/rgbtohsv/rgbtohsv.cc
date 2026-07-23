@@ -113,7 +113,7 @@ toHSV(const IN_TYPE& rgb)
     if (diff == 0.f) {
         h = 0.f;
     } else if (cmax == rgb.r) {
-        h = fmod(((rgb.g - rgb.b) / diff + 6.f), 6.f);
+        h = scene_rdl2::math::fmod(((rgb.g - rgb.b) / diff + 6.f), 6.f);
     } else if (cmax == rgb.g) {
         h = (rgb.b - rgb.r) / diff + 2.f;
     } else {

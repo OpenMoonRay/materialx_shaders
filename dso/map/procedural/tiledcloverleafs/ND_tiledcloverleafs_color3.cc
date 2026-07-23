@@ -74,7 +74,7 @@ ND_tiledcloverleafs_color3::sample(const Map* map, moonray::shading::TLState *tl
 
     // Do procedural calculation:
     // The cloverleaf shape is made of 4 overlapping disks - using abs() and max() picks the closest disk.
-    const Vec2f duv = abs(uv - center);
+    const Vec2f duv = scene_rdl2::math::abs(uv - center);
     const float radius = 0.5f * size;
     const float out = (lengthSqr(duv) <= radius * max(duv.x, duv.y)) ? 1.0f : 0.0f;
 
