@@ -56,9 +56,9 @@ ND_cellnoise3d_float::sample(const Map* self, moonray::shading::TLState *tls,
 
     // Cell noise returns a pseudo-random value for each cell based on position
     // We use the integer cell coordinates to generate a consistent random value
-    const int ix = static_cast<int>(floor(position.x));
-    const int iy = static_cast<int>(floor(position.y));
-    const int iz = static_cast<int>(floor(position.z));
+    const int ix = static_cast<int>(scene_rdl2::math::floor(position.x));
+    const int iy = static_cast<int>(scene_rdl2::math::floor(position.y));
+    const int iz = static_cast<int>(scene_rdl2::math::floor(position.z));
     
     // Generate a unique cell ID using the noise permutation table
     // Hash the cell coordinates through the permutation table

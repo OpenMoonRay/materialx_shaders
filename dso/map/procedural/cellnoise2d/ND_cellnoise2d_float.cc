@@ -56,8 +56,8 @@ ND_cellnoise2d_float::sample(const Map* self, moonray::shading::TLState *tls,
 
     // Cell noise returns a pseudo-random value for each cell based on texcoord
     // We use the integer cell coordinates to generate a consistent random value
-    const int ix = static_cast<int>(floor(texcoord.x));
-    const int iy = static_cast<int>(floor(texcoord.y));
+    const int ix = static_cast<int>(scene_rdl2::math::floor(texcoord.x));
+    const int iy = static_cast<int>(scene_rdl2::math::floor(texcoord.y));
     
     // Generate a unique cell ID using the noise permutation table
     // Hash the cell coordinates through the permutation table

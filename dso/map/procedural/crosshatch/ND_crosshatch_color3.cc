@@ -54,7 +54,7 @@ ND_crosshatch_color3::sample(const Map* self, moonray::shading::TLState *tls,
 
     // Stagger in u direction if v's integer part is odd
     if (staggered) {
-        float vFloor = floor(uv.y);
+        float vFloor = scene_rdl2::math::floor(uv.y);
         int vInt = (int)vFloor;
         if (vInt & 1) uv.x = uv.x + 0.5f;
     }
@@ -64,8 +64,8 @@ ND_crosshatch_color3::sample(const Map* self, moonray::shading::TLState *tls,
     float y = uv.x - uv.y;
 
     // Find fractional coords with a rotated tile centred on the square gap between the crosshatches
-    float xFrac = x - floor(x);
-    float yFrac = y - floor(y);
+    float xFrac = x - scene_rdl2::math::floor(x);
+    float yFrac = y - scene_rdl2::math::floor(y);
 
     // Determine axial distances from tile centre
     float ax = scene_rdl2::math::abs(xFrac - 0.5f);

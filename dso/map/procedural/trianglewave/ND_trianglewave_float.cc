@@ -41,7 +41,7 @@ ND_trianglewave_float::sample(const Map* self, moonray::shading::TLState *tls,
 {
     const ND_trianglewave_float* me = static_cast<const ND_trianglewave_float*>(self);
     float in = evalFloat(me, inAttr, tls, state);
-    float t = 2.0f * (in - floor(in));
+    float t = 2.0f * (in - scene_rdl2::math::floor(in));
     float out = (t < 1.0f) ? t : 2.0f-t;
     *sample = Color(out);
 }
