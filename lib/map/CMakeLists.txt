@@ -100,7 +100,7 @@ target_link_libraries(${component}
         Moonray::shading_ispc
         Moonray::texturing_sampler
         SceneRdl2::scene_rdl2
-)
+        SceneRdl2::common_math)
 
 add_dependencies(${component} ${objLib})
 
