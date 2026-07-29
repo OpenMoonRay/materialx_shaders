@@ -8,6 +8,7 @@ find_program(GENERATE_PYTHON_CREATE_FUNCTIONS generate_python_create_functions
              REQUIRED)
 
 include(OMR_PackageVersion)  # Sets versionString, projectString and PACKAGE_NAME
+include(OMR_Platform)        # Sets platformString and platformStringShort
 
 set(languages LANGUAGES CXX)
 if(NOT CMAKE_XCODE_BUILD_SYSTEM)

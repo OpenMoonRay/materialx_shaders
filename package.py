@@ -112,7 +112,6 @@ private_build_requires = [
     'ispc-1.20.0.x',
     'python',
     'orats',
-    'hdMoonray',
     'moonshine'
 ]
 
