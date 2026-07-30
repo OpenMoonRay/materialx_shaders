@@ -8,4 +8,3 @@ moonray_ispc_dso(ND_image_color3
         Moonray::rendering_shading
         Moonray::shading_ispc
         Moonray::texturing_sampler)
-add_dependencies(all_shader_dsos ND_image_color3)

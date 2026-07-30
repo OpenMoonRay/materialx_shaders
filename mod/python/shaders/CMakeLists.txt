@@ -24,11 +24,10 @@ add_custom_target(
 	DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/shaders.py
 )
 
-add_dependencies(shaders all_shader_dsos)
+add_dependencies(shaders all_moonray_dsos)
 
 if (CMAKE_PROJECT_NAME STREQUAL "openmoonray_dwa" OR CMAKE_PROJECT_NAME STREQUAL "openmoonray")
 	add_dependencies(shaders scene_rdl2)
-	add_dependencies(shaders DwaEmissiveMaterial CheckerboardMap TestInputsMap TestBoolOutputMap TestColorOutputMap TestDisplacement2Map TestInputsMap TestIntOutputMap TestMat3fOutputMap TestMat4fOutputMap TestNormalMap2Map TestRgbaOutputMap TestVec4fOutputMap TestInputsDisplacement TestInputsNormalMap )
 endif()
 
 set(python_install_dir

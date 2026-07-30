@@ -8,4 +8,3 @@ DEPENDENCIES
     Moonray::rendering_shading
     Moonray::shading_ispc
     SceneRdl2::render_util)
-add_dependencies(all_shader_dsos ND_lin_adobergb_to_lin_rec709_color4)
