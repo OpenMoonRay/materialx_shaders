@@ -3,6 +3,7 @@
 
 add_pats_test(
     SCRIPT Test_ND_safepower.py
-    CANONICALS scene.exr
+    OUTPUT Test_ND_safepower.exr
+    CANONICALS Test_ND_safepower.exr
     RENDER_ARGS -size 600 800
 )

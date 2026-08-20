@@ -60,6 +60,15 @@ find_package(Python REQUIRED COMPONENTS Interpreter)
 # ---------------------
 function(add_pats_test)
 
+    # These tests will only work if the usdrecord program is available
+    if(NOT USDRECORD)
+        return()
+    endif()
+	# disable materialx test on Apple right now since CI is always using older USD
+    if(APPLE)
+        return()
+    endif()
+
     # The following KEYWORD arguments are supported:
     set(options
         DIFF_HEADERS        # Adds an extra CTest with the 'diff' label to compare the canonical
@@ -152,8 +161,16 @@ function(add_pats_test)
     set_tests_properties(${generate_usd_test_name} PROPERTIES
              LABELS "rats;render;update")
     set(convert_usd_test_name "convert-usd-${test_basename}")
+	if (CMAKE_PROJECT_NAME STREQUAL "openmoonray")
+        set(GENERATE_USD_SCRIPT "${CMAKE_SOURCE_DIR}/moonray/materialx_shaders/cmake/generate_rdla.py")
+    elseif (CMAKE_PROJECT_NAME STREQUAL "openmoonray_dwa")
+        set(GENERATE_USD_SCRIPT "${CMAKE_SOURCE_DIR}/openmoonray/moonray/materialx_shaders/cmake/generate_rdla.py")
+    else()
+        set(GENERATE_USD_SCRIPT "${CMAKE_SOURCE_DIR}/cmake/generate_rdla.py")
+    endif()
+
     add_test(NAME ${convert_usd_test_name}
-             COMMAND hd_usd2rdl -in ${USDA_FILENAME} -out ${RDLA_FILENAME}
+             COMMAND ${Python_EXECUTABLE} "${GENERATE_USD_SCRIPT}" "${USDA_FILENAME}" "${RDLA_FILENAME}"
              WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
     set_tests_properties(${convert_usd_test_name} PROPERTIES
              LABELS "rats;render;update")

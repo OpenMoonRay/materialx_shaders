@@ -7,6 +7,8 @@ find_program(GENERATE_PYTHON_CREATE_FUNCTIONS generate_python_create_functions
              HINTS "mod/python/generate_python_create_functions"
              REQUIRED)
 
+find_program(USDRECORD usdrecord)
+	 
 include(OMR_PackageVersion)  # Sets versionString, projectString and PACKAGE_NAME
 include(OMR_Platform)        # Sets platformString and platformStringShort
 

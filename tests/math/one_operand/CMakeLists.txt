@@ -3,6 +3,7 @@
 
 add_pats_test(
     SCRIPT Test_one_operand.py
-    CANONICALS scene.exr
+    OUTPUT Test_one_operand.exr
+    CANONICALS Test_one_operand.exr
     RENDER_ARGS -size 600 800
 )

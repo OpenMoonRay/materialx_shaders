@@ -5,6 +5,7 @@
 
 add_pats_test(
     SCRIPT Test_ND_subtract.py
-    CANONICALS scene.exr
+    OUTPUT Test_ND_subtract.exr
+    CANONICALS Test_ND_subtract.exr
     RENDER_ARGS -size 600 800
 )
