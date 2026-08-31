@@ -146,7 +146,7 @@ colorCorrect(IN_TYPE inValue,
     
     // Apply exposure (2^value)
     if (exposure != 0.0f) {
-        Float exposureFactor = pow(2.0f, exposure);
+        Float exposureFactor = std::pow(2.0f, exposure);
         inColor.r *= exposureFactor;
         inColor.g *= exposureFactor;
         inColor.b *= exposureFactor;
@@ -162,9 +162,9 @@ colorCorrect(IN_TYPE inValue,
     // Apply gamma correction
     if (gamma != 1.0f && gamma > 0.0f) {
         Float invGamma = 1.0f / gamma;
-        inColor.r = max(0.0f, pow(max(0.0f, inColor.r), invGamma));
-        inColor.g = max(0.0f, pow(max(0.0f, inColor.g), invGamma));
-        inColor.b = max(0.0f, pow(max(0.0f, inColor.b), invGamma));
+        inColor.r = max(0.0f, std::pow(max(0.0f, inColor.r), invGamma));
+        inColor.g = max(0.0f, std::pow(max(0.0f, inColor.g), invGamma));
+        inColor.b = max(0.0f, std::pow(max(0.0f, inColor.b), invGamma));
     }
     
     // Apply contrast around pivot

@@ -115,9 +115,9 @@ doG18Rec709ToLinRec709(IN_TYPE inValue)
     outValue.g = max(0.0f, inValue.g);
     outValue.b = max(0.0f, inValue.b);
     
-    outValue.r = pow(outValue.r, 2.4f);
-    outValue.g = pow(outValue.g, 2.4f);
-    outValue.b = pow(outValue.b, 2.4f);
+    outValue.r = std::pow(outValue.r, 2.4f);
+    outValue.g = std::pow(outValue.g, 2.4f);
+    outValue.b = std::pow(outValue.b, 2.4f);
 
     return outValue;
 }

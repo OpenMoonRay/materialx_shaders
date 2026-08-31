@@ -224,7 +224,7 @@ doOperation(float in1, float in2)
 #elif STRING_CMP(OPERATION,divide)
     return in1 / in2;
 #elif STRING_CMP(OPERATION,modulo)
-    return fmod(in1, in2);
+    return std::fmod(in1, in2);
 #elif STRING_CMP(OPERATION,atan2)
     return atan2f(in1, in2);
 #elif STRING_CMP(OPERATION,power)
