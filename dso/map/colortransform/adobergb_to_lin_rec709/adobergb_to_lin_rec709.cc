@@ -118,9 +118,9 @@ doAdobergbToLinRec709(IN_TYPE inValue)
     linearAdobeRgb.g = max(0.0f, inValue.g);
     linearAdobeRgb.b = max(0.0f, inValue.b);
     
-    linearAdobeRgb.r = pow(linearAdobeRgb.r, gamma);
-    linearAdobeRgb.g = pow(linearAdobeRgb.g, gamma);
-    linearAdobeRgb.b = pow(linearAdobeRgb.b, gamma);
+    linearAdobeRgb.r = std::pow(linearAdobeRgb.r, gamma);
+    linearAdobeRgb.g = std::pow(linearAdobeRgb.g, gamma);
+    linearAdobeRgb.b = std::pow(linearAdobeRgb.b, gamma);
     
     // Adobe RGB and Rec.709 share the same primaries (both D65 white point)
     // so no matrix transformation is needed, only gamma decode

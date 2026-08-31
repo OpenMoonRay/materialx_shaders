@@ -54,14 +54,14 @@ ND_grid_color3::sample(const Map* self, moonray::shading::TLState *tls,
 
     // Stagger in u direction if v's integer part is odd
     if (staggered) {
-        float vFloor = floor(uv.y);
+        float vFloor = std::floor(uv.y);
         int vInt = (int)vFloor;
         if (vInt & 1) uv.x = uv.x + 0.5f;
     }
 
     // Find fractional coords
-    float uFrac = uv.x - floor(uv.x);
-    float vFrac = uv.y - floor(uv.y);
+    float uFrac = uv.x - std::floor(uv.x);
+    float vFrac = uv.y - std::floor(uv.y);
 
     // Determine axial distances from tile centre
     float au = scene_rdl2::math::abs(uFrac - 0.5f);

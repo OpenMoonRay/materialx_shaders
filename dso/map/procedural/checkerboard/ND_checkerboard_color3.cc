@@ -51,7 +51,7 @@ ND_checkerboard_color3::sample(const Map* self, moonray::shading::TLState *tls,
 
     // Do procedural calculation
     Vec2f uv = texcoordValue * uvtilingValue - uvoffsetValue;
-    int uvXor = (int)floor(uv.x) ^ (int)floor(uv.y);
+    int uvXor = (int)std::floor(uv.x) ^ (int)std::floor(uv.y);
     *sample = (uvXor & 1) ? color1Value : color2Value;
 }
 
