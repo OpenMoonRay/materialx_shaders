@@ -93,10 +93,20 @@ variants = [
         'openvdb-13',
         'python-3.13'
     ],
+    [   # variant 7
+        'os-rocky-9',
+        'opt_level-optdebug',
+        'refplat-vfx2022.0',
+        'openimageio-2.3.20.0.x',
+        'gcc-9.3.x.1',
+        'openvdb-9',
+        'zlib-1.2.11.x',
+        'opensubdiv-3.5.0.x.0'
+    ],
 ]
 
 conf_rats_variants = variants[0:2]
-conf_CI_variants = list(filter(lambda v: 'os-CentOS-7' in v, variants))
+conf_CI_variants = list(filter(lambda v: 'os-rocky-9' in v, variants))
 
 requires = [
     'moonray-18.10',
