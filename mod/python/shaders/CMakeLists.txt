@@ -12,9 +12,27 @@ else()
     set(PYTHONPATH_WITH_SCENE_RDL2 $ENV{PYTHONPATH})
 endif()
 
+# This script imports the compiled scene_rdl2 python extension module, which
+# dlopen()s sanitizer-instrumented shared libraries when built with
+# -fsanitize=address,undefined. The plain python3 interpreter invoked below
+# is not itself sanitizer-instrumented, so some lazily-resolved sanitizer
+# symbols (e.g. UBSan's vptr type cache) fail to resolve unless the
+# sanitizer runtime is preloaded into the interpreter process up front.
+set(GENERATE_PYTHON_CREATE_FUNCTIONS_ENV "")
+if (CMAKE_EXE_LINKER_FLAGS MATCHES "-fsanitize")
+    execute_process(
+        COMMAND ${CMAKE_CXX_COMPILER} -print-file-name=libclang_rt.asan.so
+        OUTPUT_VARIABLE SANITIZER_RUNTIME_LIB
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    if (EXISTS "${SANITIZER_RUNTIME_LIB}")
+        set(GENERATE_PYTHON_CREATE_FUNCTIONS_ENV LD_PRELOAD=${SANITIZER_RUNTIME_LIB})
+    endif()
+endif()
+
 add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/shaders.py
-    COMMAND ${CMAKE_COMMAND} -E env PYTHONPATH=${PYTHONPATH_WITH_SCENE_RDL2} RDL2_DSO_PATH=${CMAKE_BINARY_DIR}/rdl2dso:$ENV{RDL2_DSO_PATH} ${GENERATE_PYTHON_CREATE_FUNCTIONS}  -o ${CMAKE_CURRENT_BINARY_DIR}/shaders.py
+    COMMAND ${CMAKE_COMMAND} -E env PYTHONPATH=${PYTHONPATH_WITH_SCENE_RDL2} RDL2_DSO_PATH=${CMAKE_BINARY_DIR}/rdl2dso:$ENV{RDL2_DSO_PATH} ${GENERATE_PYTHON_CREATE_FUNCTIONS_ENV} ${GENERATE_PYTHON_CREATE_FUNCTIONS}  -o ${CMAKE_CURRENT_BINARY_DIR}/shaders.py
     COMMENT "Generating shaders.py"
     DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../generate_python_create_functions/generate_python_create_functions"
 )
