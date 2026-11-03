@@ -1,15 +1,32 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Moonray Project
 
-# if building at the same time as scene_rdl2 we need to get access to the
-# scene_rdl2 python module before it is installed so point to it in the
-# build directory. Otherwie it should already be in the environment
-if (EXISTS "${CMAKE_BINARY_DIR}/moonray/scene_rdl2" AND IS_DIRECTORY "${CMAKE_BINARY_DIR}/moonray/scene_rdl2")
-    set(PYTHONPATH_WITH_SCENE_RDL2 ${CMAKE_BINARY_DIR}/moonray/scene_rdl2/mod/python/py_scene_rdl2:$ENV{PYTHONPATH})
-elseif(EXISTS "${CMAKE_BINARY_DIR}/openmoonray/moonray/scene_rdl2" AND IS_DIRECTORY "${CMAKE_BINARY_DIR}/openmoonray/moonray/scene_rdl2")
-    set(PYTHONPATH_WITH_SCENE_RDL2 ${CMAKE_BINARY_DIR}/openmoonray/moonray/scene_rdl2/mod/python/py_scene_rdl2:$ENV{PYTHONPATH})
+# If materialx_shaders is being built standalone (its own top-level project),
+# scene_rdl2 is located via find_package(SceneRdl2) above and its python
+# module is expected to already be in the environment/PYTHONPATH.
+#
+# If materialx_shaders is instead built in-tree as part of a larger combined
+# build (e.g. openmoonray), scene_rdl2 is a sibling add_subdirectory() target
+# rather than a found package, so its python module's build-tree location
+# needs to be added to PYTHONPATH explicitly, and shaders.py's generation
+# needs a real build-order dependency on scene_rdl2's compiled python module.
+#
+# This reuses the same PROJECT_NAME/CMAKE_PROJECT_NAME comparison the root
+# CMakeLists.txt already uses to tell these two cases apart. Unlike checking
+# whether a build-tree directory already exists, this is independent of
+# add_subdirectory() call order -- it's set the moment this project's own
+# project() call runs. The scene_rdl2 python module's actual location/
+# dependency is then expressed via $<TARGET_FILE...> generator expressions,
+# which CMake only resolves once the whole project's target graph is known
+# (after every add_subdirectory() has been processed), so this works no
+# matter whether scene_rdl2's add_subdirectory() call comes before or after
+# materialx_shaders's.
+if (NOT "${PROJECT_NAME}" STREQUAL "${CMAKE_PROJECT_NAME}")
+    set(PYTHONPATH_WITH_SCENE_RDL2 "$<TARGET_FILE_DIR:__scene_rdl2__>:$ENV{PYTHONPATH}")
+    set(SCENE_RDL2_PYTHON_MODULE_DEP "$<TARGET_FILE:__scene_rdl2__>")
 else()
     set(PYTHONPATH_WITH_SCENE_RDL2 $ENV{PYTHONPATH})
+    set(SCENE_RDL2_PYTHON_MODULE_DEP "")
 endif()
 
 # This script imports the compiled scene_rdl2 python extension module, which
@@ -35,6 +52,7 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E env PYTHONPATH=${PYTHONPATH_WITH_SCENE_RDL2} RDL2_DSO_PATH=${CMAKE_BINARY_DIR}/rdl2dso:$ENV{RDL2_DSO_PATH} ${GENERATE_PYTHON_CREATE_FUNCTIONS_ENV} ${GENERATE_PYTHON_CREATE_FUNCTIONS}  -o ${CMAKE_CURRENT_BINARY_DIR}/shaders.py
     COMMENT "Generating shaders.py"
     DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../generate_python_create_functions/generate_python_create_functions"
+            ${SCENE_RDL2_PYTHON_MODULE_DEP}
 )
 
 add_custom_target(
@@ -43,14 +61,6 @@ add_custom_target(
 )
 
 add_dependencies(shaders all_shader_dsos)
-
-if (EXISTS "${CMAKE_BINARY_DIR}/moonray/scene_rdl2" AND IS_DIRECTORY "${CMAKE_BINARY_DIR}/moonray/scene_rdl2")
-	add_dependencies(shaders scene_rdl2)
-	add_dependencies(shaders DwaEmissiveMaterial CheckerboardMap TestInputsMap TestBoolOutputMap TestColorOutputMap TestDisplacement2Map TestInputsMap TestIntOutputMap TestMat3fOutputMap TestMat4fOutputMap TestNormalMap2Map TestRgbaOutputMap TestVec4fOutputMap TestInputsDisplacement TestInputsNormalMap )
-elseif(EXISTS "${CMAKE_BINARY_DIR}/openmoonray/moonray/scene_rdl2" AND IS_DIRECTORY "${CMAKE_BINARY_DIR}/openmoonray/moonray/scene_rdl2")
-	add_dependencies(shaders scene_rdl2)
-	add_dependencies(shaders DwaEmissiveMaterial CheckerboardMap TestInputsMap TestBoolOutputMap TestColorOutputMap TestDisplacement2Map TestInputsMap TestIntOutputMap TestMat3fOutputMap TestMat4fOutputMap TestNormalMap2Map TestRgbaOutputMap TestVec4fOutputMap TestInputsDisplacement TestInputsNormalMap )
-endif()
 
 set(python_install_dir
 		python/lib/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/${PACKAGE_NAME})
