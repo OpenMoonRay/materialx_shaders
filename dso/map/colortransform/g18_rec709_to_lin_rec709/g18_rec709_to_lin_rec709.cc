@@ -116,9 +116,9 @@ doG18Rec709ToLinRec709(IN_TYPE inValue)
     outValue.g = max(0.0f, inValue.g);
     outValue.b = max(0.0f, inValue.b);
     
-    outValue.r = pow(outValue.r, 1.8f);
-    outValue.g = pow(outValue.g, 1.8f);
-    outValue.b = pow(outValue.b, 1.8f);
+    outValue.r = scene_rdl2::math::pow(outValue.r, 1.8f);
+    outValue.g = scene_rdl2::math::pow(outValue.g, 1.8f);
+    outValue.b = scene_rdl2::math::pow(outValue.b, 1.8f);
 
     return outValue;
 }

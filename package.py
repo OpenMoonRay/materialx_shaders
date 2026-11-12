@@ -32,7 +32,6 @@ help = ('For assistance, '
         "please contact the folio's owner at: moonbase-dev@dreamworks.com")
 
 build_system = 'cmake'
-build_system_pbr = 'cmake_modules'
 
 variants = [
     [   # variant 0
@@ -88,6 +87,15 @@ variants = [
     [   # variant 6
         'os-rocky-9',
         'opt_level-optdebug',
+        'refplat-vfx2026.0',
+        'openimageio-3.1',
+        'gcc-14.2.x',
+        'openvdb-13',
+        'python-3.13'
+    ],
+    [   # variant 7
+        'os-rocky-9',
+        'opt_level-optdebug',
         'refplat-vfx2022.0',
         'openimageio-2.3.20.0.x',
         'gcc-9.3.x.1',
@@ -98,7 +106,7 @@ variants = [
 ]
 
 conf_rats_variants = variants[0:2]
-conf_CI_variants = list(filter(lambda v: 'os-CentOS-7' in v, variants))
+conf_CI_variants = list(filter(lambda v: 'os-rocky-9' in v, variants))
 
 requires = [
     'moonray-18.10',
@@ -106,21 +114,18 @@ requires = [
 ]
 
 private_build_requires = [
-    build_system_pbr,
     'cmake_modules-2.0',
     'cppunit',
     'ispc-1.20.0.x',
-    'materialx', # for cmd/make_stub_shader
     'python',
     'orats',
-    'hdMoonray',
     'moonshine'
 ]
 
 commandstr = lambda i: "cd build/"+os.path.join(*variants[i])+"; ctest -j $(nproc)"
 testentry = lambda i: ("variant%d" % i,
                        { "command": commandstr(i),
-                         "requires": ["cmake-3.23"] + variants[i] } )
+                         "requires": ["cmake-3.24+<4"] + variants[i] } )
 testlist = [testentry(i) for i in range(len(variants))]
 tests = dict(testlist)
 

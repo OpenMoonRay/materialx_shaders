@@ -113,7 +113,7 @@ srgbToLinear(float val)
     if (val <= threshold) {
         return val / 12.92f;
     } else {
-        return pow(max(0.0f, (val + 0.055f) / 1.055f), 2.4f);
+        return scene_rdl2::math::pow(max(0.0f, (val + 0.055f) / 1.055f), 2.4f);
     }
 }
 

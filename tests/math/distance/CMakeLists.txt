@@ -3,6 +3,7 @@
 
 add_pats_test(
     SCRIPT Test_distance.py
-    CANONICALS scene.exr
+    OUTPUT Test_distance.exr
+    CANONICALS Test_distance.exr
     RENDER_ARGS -size 600 800
 )

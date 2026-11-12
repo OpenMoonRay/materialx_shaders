@@ -96,9 +96,9 @@ ND_unifiednoise3d_float::sample(const Map* self, moonray::shading::TLState *tls,
 
         case 1: { // Cell noise
             // Cell noise returns a pseudo-random value for each cell based on position
-            const int ix = static_cast<int>(floor(transformedPos.x));
-            const int iy = static_cast<int>(floor(transformedPos.y));
-            const int iz = static_cast<int>(floor(transformedPos.z));
+            const int ix = static_cast<int>(scene_rdl2::math::floor(transformedPos.x));
+            const int iy = static_cast<int>(scene_rdl2::math::floor(transformedPos.y));
+            const int iz = static_cast<int>(scene_rdl2::math::floor(transformedPos.z));
 
             // Generate a unique cell ID using the noise permutation table
             const ispc::NOISE_Noise* noise = me->mCellNoise->getIspc();

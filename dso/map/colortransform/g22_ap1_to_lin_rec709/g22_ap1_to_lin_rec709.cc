@@ -113,9 +113,9 @@ doG22Ap1ToLinRec709(IN_TYPE inValue)
     linearAp1.g = max(0.0f, inValue.g);
     linearAp1.b = max(0.0f, inValue.b);
     
-    linearAp1.r = pow(linearAp1.r, 2.2f);
-    linearAp1.g = pow(linearAp1.g, 2.2f);
-    linearAp1.b = pow(linearAp1.b, 2.2f);
+    linearAp1.r = scene_rdl2::math::pow(linearAp1.r, 2.2f);
+    linearAp1.g = scene_rdl2::math::pow(linearAp1.g, 2.2f);
+    linearAp1.b = scene_rdl2::math::pow(linearAp1.b, 2.2f);
     
     // Step 2: Apply ACEScg (AP1) to Linear Rec.709 matrix
     const float m00 =  1.705050786f;

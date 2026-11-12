@@ -124,7 +124,7 @@ SHADER_NAME::sample(const SHADER_TYPE* self, moonray::shading::TLState *tls,
 #if STRING_CMP(VARIANT,integer)
     const int in = evalInt(me, inAttr, tls, state);
 #else
-    const int in = static_cast<int>(floor(evalFloat(me, inAttr, tls, state) * kFloatScale));
+    const int in = static_cast<int>(scene_rdl2::math::floor(evalFloat(me, inAttr, tls, state) * kFloatScale));
 #endif
 
     Color hsvLow, hsvHigh;

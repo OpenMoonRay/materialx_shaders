@@ -63,18 +63,18 @@ ND_tiledcloverleafs_color3::sample(const Map* map, moonray::shading::TLState *tl
         const Vec2f uv1 = Vec2f(uv.x + uv.y + 0.5f, uv.x - uv.y + 0.5f);
 
         // Round
-        const Vec2f uv2 = Vec2f(floor(uv1.x), floor(uv1.y));
+        const Vec2f uv2 = Vec2f(scene_rdl2::math::floor(uv1.x), scene_rdl2::math::floor(uv1.y));
 
         // Undo rotation and scale to give center
         center = 0.5f * Vec2f(uv2.x + uv2.y, uv2.x - uv2.y);
     } else {
         // Not staggered - simply find center of square containing the uv-point.
-        center = Vec2f(floor(uv.x) + 0.5f, floor(uv.y) + 0.5f);
+        center = Vec2f(scene_rdl2::math::floor(uv.x) + 0.5f, scene_rdl2::math::floor(uv.y) + 0.5f);
     }
 
     // Do procedural calculation:
     // The cloverleaf shape is made of 4 overlapping disks - using abs() and max() picks the closest disk.
-    const Vec2f duv = abs(uv - center);
+    const Vec2f duv = scene_rdl2::math::abs(uv - center);
     const float radius = 0.5f * size;
     const float out = (lengthSqr(duv) <= radius * max(duv.x, duv.y)) ? 1.0f : 0.0f;
 

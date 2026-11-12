@@ -224,18 +224,18 @@ doOperation(float in1, float in2)
 #elif STRING_CMP(OPERATION,divide)
     return in1 / in2;
 #elif STRING_CMP(OPERATION,modulo)
-    return fmod(in1, in2);
+    return scene_rdl2::math::fmod(in1, in2);
 #elif STRING_CMP(OPERATION,atan2)
-    return atan2f(in1, in2);
+    return scene_rdl2::math::atan2(in1, in2);
 #elif STRING_CMP(OPERATION,power)
-    return powf(in1, in2);
+    return scene_rdl2::math::pow(in1, in2);
 #elif STRING_CMP(OPERATION,safepower)
     // prevents trying to take roots of negative numbers
     return (in1 < 0.0) ? -powf(-in1,in2) : powf(in1,in2);
 #elif STRING_CMP(OPERATION,min)
-    return min(in1, in2);
+    return scene_rdl2::math::min(in1, in2);
 #elif STRING_CMP(OPERATION,max)
-    return max(in1, in2);
+    return scene_rdl2::math::max(in1, in2);
 #elif defined(OPERATION)
 #error OPERATION is set to an invalid value
 #else

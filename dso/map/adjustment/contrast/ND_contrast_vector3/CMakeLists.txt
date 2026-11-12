@@ -9,4 +9,3 @@ DEPENDENCIES
     Moonray::shading_ispc
     SceneRdl2::render_util)
 
-add_dependencies(all_shader_dsos ND_contrast_vector3)

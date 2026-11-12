@@ -109,7 +109,7 @@ toRGB(const IN_TYPE& hsv)
     float v = hsv.b;
 
     float h6 = h * 6;
-    float h6Floor = std::floor(h6);
+    float h6Floor = scene_rdl2::math::floor(h6);
     float f = h6 - h6Floor;
 
     float p = v * (1 - s);

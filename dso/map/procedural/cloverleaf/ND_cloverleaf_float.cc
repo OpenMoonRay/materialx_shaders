@@ -51,7 +51,7 @@ ND_cloverleaf_float::sample(const Map* self, moonray::shading::TLState *tls,
     // Note: we halve the value of center because the spec says it's "2x the coordinate of the center".
     // Also we use abs and max to exploit the 8-fold symmetry of the cloverleaf, and do some algebraic
     // reduction on the resulting test to improve efficiency.
-    const Vec2f uv = abs(texcoord - 0.5f * center);
+    const Vec2f uv = scene_rdl2::math::abs(texcoord - 0.5f * center);
     *sample = Color((lengthSqr(uv) < radius * max(uv.x, uv.y)) ? 1.0f : 0.0f);
 }
 

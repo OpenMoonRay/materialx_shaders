@@ -140,40 +140,40 @@ colorCorrect(IN_TYPE inValue,
              Float exposure)
 {
     IN_TYPE outValue = inValue;
-    
+
     // Extract RGB components for color3/color4
     Color inColor(outValue.r, outValue.g, outValue.b);
-    
+
     // Apply exposure (2^value)
     if (exposure != 0.0f) {
-        Float exposureFactor = pow(2.0f, exposure);
+        Float exposureFactor = scene_rdl2::math::pow(2.0f, exposure);
         inColor.r *= exposureFactor;
         inColor.g *= exposureFactor;
         inColor.b *= exposureFactor;
     }
-    
+
     // Apply lift and gain
     if (lift != 0.0f || gain != 1.0f) {
         inColor.r = lift + inColor.r * gain;
         inColor.g = lift + inColor.g * gain;
         inColor.b = lift + inColor.b * gain;
     }
-    
+
     // Apply gamma correction
     if (gamma != 1.0f && gamma > 0.0f) {
         Float invGamma = 1.0f / gamma;
-        inColor.r = max(0.0f, pow(max(0.0f, inColor.r), invGamma));
-        inColor.g = max(0.0f, pow(max(0.0f, inColor.g), invGamma));
-        inColor.b = max(0.0f, pow(max(0.0f, inColor.b), invGamma));
+        inColor.r = max(0.0f, scene_rdl2::math::pow(max(0.0f, inColor.r), invGamma));
+        inColor.g = max(0.0f, scene_rdl2::math::pow(max(0.0f, inColor.g), invGamma));
+        inColor.b = max(0.0f, scene_rdl2::math::pow(max(0.0f, inColor.b), invGamma));
     }
-    
+
     // Apply contrast around pivot
     if (contrast != 1.0f) {
         inColor.r = contrastPivot + (inColor.r - contrastPivot) * contrast;
         inColor.g = contrastPivot + (inColor.g - contrastPivot) * contrast;
         inColor.b = contrastPivot + (inColor.b - contrastPivot) * contrast;
     }
-    
+
     // Apply hue and saturation adjustments in HSV space
     if (hue != 0.0f || saturation != 1.0f) {
         Color hsvColor = rgbToHsv(inColor);
@@ -181,13 +181,13 @@ colorCorrect(IN_TYPE inValue,
         hsvColor.g *= max(0.0f, saturation); // Saturation adjustment
         inColor = hsvToRgb(hsvColor);
     }
-    
+
     // Set the result back to output
     outValue.r = inColor.r;
     outValue.g = inColor.g;
     outValue.b = inColor.b;
     // For color4, alpha channel remains unchanged
-    
+
     return outValue;
 }
 

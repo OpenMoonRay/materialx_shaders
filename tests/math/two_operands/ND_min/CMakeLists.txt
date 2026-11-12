@@ -3,6 +3,7 @@
 
 add_pats_test(
     SCRIPT Test_ND_min.py
-    CANONICALS scene.exr
+    OUTPUT Test_ND_min.exr
+    CANONICALS Test_ND_min.exr
     RENDER_ARGS -size 600 800
 )

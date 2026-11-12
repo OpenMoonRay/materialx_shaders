@@ -28,8 +28,7 @@ set_target_properties(
     PROPERTIES
         ISPC_HEADER_SUFFIX _ispc_stubs.h
         ISPC_HEADER_DIRECTORY /${relBinDir}
-        ISPC_INSTRUCTION_SETS avx2-i32x8
-        # ISPC_INSTRUCTION_SETS ${GLOBAL_ISPC_INSTRUCTION_SETS}
+        ISPC_INSTRUCTION_SETS ${GLOBAL_ISPC_INSTRUCTION_SETS}
         LINKER_LANGUAGE CXX
 )
 
@@ -101,7 +100,7 @@ target_link_libraries(${component}
         Moonray::shading_ispc
         Moonray::texturing_sampler
         SceneRdl2::scene_rdl2
-)
+        SceneRdl2::common_math)
 
 add_dependencies(${component} ${objLib})
 

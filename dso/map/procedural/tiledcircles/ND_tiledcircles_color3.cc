@@ -70,9 +70,9 @@ ND_tiledcircles_color3::sample(const Map* map, moonray::shading::TLState *tls,
         const float d8 = -uv.x - 1.73205080757f * uv.y;     // dot uv with 2 * (-1/2, -sqrt(3)/2)
 
         // Find floors corresponding to cell boundaries
-        const float i0 = floor(d0);
-        const float i4 = floor(d4);
-        const float i8 = floor(d8);
+        const float i0 = scene_rdl2::math::floor(d0);
+        const float i4 = scene_rdl2::math::floor(d4);
+        const float i8 = scene_rdl2::math::floor(d8);
 
         // The other indices (i2, i6, i10) are derived from the above to represent the other directions, in an
         // efficient way using less arithmetic. These relationships come from the symmetry of the hexagonal lattice.
@@ -100,7 +100,7 @@ ND_tiledcircles_color3::sample(const Map* map, moonray::shading::TLState *tls,
     } else {
         // Not staggered; use square lattice.
         // Simply find center of square containing the uv-point.
-        center = Vec2f(floor(uv.x) + 0.5f, floor(uv.y) + 0.5f);
+        center = Vec2f(scene_rdl2::math::floor(uv.x) + 0.5f, scene_rdl2::math::floor(uv.y) + 0.5f);
     }
 
     const float dSqr = lengthSqr(uv - center);
